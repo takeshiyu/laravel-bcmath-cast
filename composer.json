@@ -1,0 +1,60 @@
+{
+  "name": "yuwuhsien/eloquent-bcmath-cast",
+  "description": "Laravel Eloquent casts for PHP 8.4's BCMath\\Number object API",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "eloquent",
+    "cast",
+    "bcmath",
+    "decimal",
+    "precision",
+    "php84"
+  ],
+  "authors": [
+    {
+      "name": "YU WU HSIEN",
+      "email": "hey@ywh.sh"
+    }
+  ],
+  "require": {
+    "php": "^8.4",
+    "ext-bcmath": "*",
+    "illuminate/contracts": "^11.0",
+    "illuminate/database": "^11.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.25",
+    "orchestra/testbench": "^9.15",
+    "pestphp/pest": "^3.0",
+    "pestphp/pest-plugin-laravel": "^3.0",
+    "phpstan/extension-installer": "^1.3",
+    "phpstan/phpstan": "^1.10",
+    "phpstan/phpstan-phpunit": "^1.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "YuWuHsien\\Decimal\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "YuWuHsien\\Decimal\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/pest --profile",
+    "test-coverage": "vendor/bin/pest --profile --coverage",
+    "analyse": "vendor/bin/phpstan analyse"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "phpstan/extension-installer": true
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
