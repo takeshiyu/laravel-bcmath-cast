@@ -1,3 +1,7 @@
+<p>
+    <a href="https://github.com/takeshiyu/laravel-bcmath-cast/actions/workflows/tests.yml"><img src="https://github.com/takeshiyu/laravel-bcmath-cast/actions/workflows/tests.yml/badge.svg" alt="Build Status"></a>
+</p>
+
 # Laravel BCMath Cast
 
 Laravel Eloquent casts for PHP 8.4's `BCMath\Number` object API, enabling natural operator-based arithmetic on model attributes while maintaining arbitrary precision decimal accuracy.
