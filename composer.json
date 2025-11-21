@@ -1,6 +1,6 @@
 {
   "name": "yuwuhsien/eloquent-bcmath-cast",
-  "description": "Laravel Eloquent casts for PHP 8.4's BCMath\\Number object API",
+  "description": "Laravel Eloquent casts for PHP 8.4's BCMath\\Number object API, enabling natural operator-based arithmetic on model attributes while maintaining arbitrary precision decimal accuracy.",
   "type": "library",
   "license": "MIT",
   "keywords": [
