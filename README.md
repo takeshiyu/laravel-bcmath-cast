@@ -1,5 +1,6 @@
-<p>
+<p align="center">
     <a href="https://github.com/takeshiyu/laravel-bcmath-cast/actions/workflows/tests.yml"><img src="https://github.com/takeshiyu/laravel-bcmath-cast/actions/workflows/tests.yml/badge.svg" alt="Build Status"></a>
+    <img alt="Packagist Downloads" src="https://img.shields.io/packagist/dt/yuwuhsien/laravel-bcmath-cast">
 </p>
 
 # Laravel BCMath Cast
