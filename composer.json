@@ -45,7 +45,7 @@
   },
   "scripts": {
     "test": "vendor/bin/pest --profile",
-    "test-coverage": "vendor/bin/pest --profile --coverage",
+    "test-coverage": "vendor/bin/pest --profile --coverage --coverage-html=build/coverage --coverage-clover=build/logs/clover.xml",
     "analyse": "vendor/bin/phpstan analyse"
   },
   "config": {
