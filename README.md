@@ -26,7 +26,7 @@ Read more: [BCMath Object API in PHP 8.4](https://ywh.sh/writing/bcmath-object-a
 ## Requirements
 
 - **PHP 8.4+** (for `BCMath\Number` class)
-- **Laravel 11.x**
+- **Laravel 11+**
 
 ## Installation
 
