@@ -2,6 +2,8 @@
 /node_modules/
 /.idea/
 /.vscode/
+/.claude/
+!/.claude/settings.json
 /.php-cs-fixer.cache
 /phpunit.xml
 /phpstan.neon
