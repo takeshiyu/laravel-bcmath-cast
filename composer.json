@@ -26,9 +26,9 @@
   },
   "require-dev": {
     "laravel/pint": "^1.25",
-    "orchestra/testbench": "^9.15",
-    "pestphp/pest": "^3.0",
-    "pestphp/pest-plugin-laravel": "^3.0",
+    "orchestra/testbench": "^9.15|^10.0|^11.0",
+    "pestphp/pest": "^3.0|^4.0",
+    "pestphp/pest-plugin-laravel": "^3.0|^4.0",
     "phpstan/extension-installer": "^1.3",
     "phpstan/phpstan": "^1.10",
     "phpstan/phpstan-phpunit": "^1.3"
@@ -45,7 +45,7 @@
   },
   "scripts": {
     "test": "vendor/bin/pest --profile",
-    "test-coverage": "vendor/bin/pest --profile --coverage",
+    "test-coverage": "vendor/bin/pest --profile --coverage --coverage-html=build/coverage --coverage-clover=build/logs/clover.xml",
     "analyse": "vendor/bin/phpstan analyse"
   },
   "config": {
