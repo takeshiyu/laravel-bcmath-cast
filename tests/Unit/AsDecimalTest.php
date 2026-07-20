@@ -109,25 +109,13 @@ describe('set() method', function () {
     })->throws(ErrorException::class, 'Float values may lose precision');
 
     test('converts small float to plain decimal instead of scientific notation', function () {
-        set_error_handler(fn (): bool => true, E_USER_WARNING);
-
-        try {
-            $result = $this->cast->set($this->model, 'price', 0.000001234, []);
-        } finally {
-            restore_error_handler();
-        }
+        $result = withSuppressedWarning(fn () => $this->cast->set($this->model, 'price', 0.000001234, []));
 
         expect($result)->toBe('0.000001234');
     });
 
     test('converts large float to plain decimal instead of scientific notation', function () {
-        set_error_handler(fn (): bool => true, E_USER_WARNING);
-
-        try {
-            $result = $this->cast->set($this->model, 'price', 1e20, []);
-        } finally {
-            restore_error_handler();
-        }
+        $result = withSuppressedWarning(fn () => $this->cast->set($this->model, 'price', 1e20, []));
 
         expect($result)->toBe('100000000000000000000');
     });
@@ -149,13 +137,7 @@ describe('set() method', function () {
     })->throws(InvalidArgumentException::class, 'must be a finite number');
 
     test('every stored string is readable back by get()', function (mixed $input) {
-        set_error_handler(fn (): bool => true, E_USER_WARNING);
-
-        try {
-            $stored = $this->cast->set($this->model, 'price', $input, []);
-        } finally {
-            restore_error_handler();
-        }
+        $stored = withSuppressedWarning(fn () => $this->cast->set($this->model, 'price', $input, []));
 
         expect($this->cast->get($this->model, 'price', $stored, []))
             ->toBeInstanceOf(Number::class);

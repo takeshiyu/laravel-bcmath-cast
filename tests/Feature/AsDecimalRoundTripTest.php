@@ -42,13 +42,7 @@ describe('model round-trip', function () {
     });
 
     test('persists and rehydrates a small float that stringifies to scientific notation', function () {
-        set_error_handler(fn (): bool => true, E_USER_WARNING);
-
-        try {
-            $product = $this->model::query()->create(['price' => 0.000001234]);
-        } finally {
-            restore_error_handler();
-        }
+        $product = withSuppressedWarning(fn () => $this->model::query()->create(['price' => 0.000001234]));
 
         $fresh = $this->model::query()->findOrFail($product->id);
 
