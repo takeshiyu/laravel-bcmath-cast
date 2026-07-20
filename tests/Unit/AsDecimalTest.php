@@ -84,15 +84,73 @@ describe('set() method', function () {
         expect($result)->toBe('-19.99');
     });
 
+    test('accepts explicitly signed positive string', function () {
+        $result = $this->cast->set($this->model, 'price', '+5', []);
+
+        expect($result)->toBe('+5');
+    });
+
+    test('accepts string with leading decimal point', function () {
+        $result = $this->cast->set($this->model, 'price', '.5', []);
+
+        expect($result)->toBe('.5');
+    });
+
+    test('accepts string with trailing decimal point', function () {
+        $result = $this->cast->set($this->model, 'price', '5.', []);
+
+        expect($result)->toBe('5.');
+    });
+
     test('converts float to string with warning', function () {
         $result = $this->cast->set($this->model, 'price', 19.99, []);
 
         expect($result)->toBe('19.99');
     })->throws(ErrorException::class, 'Float values may lose precision');
 
+    test('converts small float to plain decimal instead of scientific notation', function () {
+        $result = withSuppressedWarning(fn () => $this->cast->set($this->model, 'price', 0.000001234, []));
+
+        expect($result)->toBe('0.000001234');
+    });
+
+    test('converts large float to plain decimal instead of scientific notation', function () {
+        $result = withSuppressedWarning(fn () => $this->cast->set($this->model, 'price', 1e20, []));
+
+        expect($result)->toBe('100000000000000000000');
+    });
+
     test('rejects non-numeric string', function () {
         $this->cast->set($this->model, 'price', 'not-a-number', []);
     })->throws(InvalidArgumentException::class, 'must be a numeric string');
+
+    test('rejects scientific notation string that Number cannot parse', function () {
+        $this->cast->set($this->model, 'price', '1e5', []);
+    })->throws(InvalidArgumentException::class, 'must be a numeric string');
+
+    test('rejects numeric string with surrounding whitespace', function () {
+        $this->cast->set($this->model, 'price', ' 19.99', []);
+    })->throws(InvalidArgumentException::class, 'must be a numeric string');
+
+    test('rejects non-finite floats', function () {
+        $this->cast->set($this->model, 'price', INF, []);
+    })->throws(InvalidArgumentException::class, 'must be a finite number');
+
+    test('every stored string is readable back by get()', function (mixed $input) {
+        $stored = withSuppressedWarning(fn () => $this->cast->set($this->model, 'price', $input, []));
+
+        expect($this->cast->get($this->model, 'price', $stored, []))
+            ->toBeInstanceOf(Number::class);
+    })->with([
+        'plain string' => '19.99',
+        'signed string' => '+5',
+        'leading dot' => '.5',
+        'trailing dot' => '5.',
+        'integer' => 42,
+        'small float' => 0.000001234,
+        'large float' => 1e20,
+        'number object' => new Number('123.456789'),
+    ]);
 
     test('rejects invalid types', function () {
         $this->cast->set($this->model, 'price', [], []);
