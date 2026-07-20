@@ -108,9 +108,67 @@ describe('set() method', function () {
         expect($result)->toBe('19.99');
     })->throws(ErrorException::class, 'Float values may lose precision');
 
+    test('converts small float to plain decimal instead of scientific notation', function () {
+        set_error_handler(fn (): bool => true, E_USER_WARNING);
+
+        try {
+            $result = $this->cast->set($this->model, 'price', 0.000001234, []);
+        } finally {
+            restore_error_handler();
+        }
+
+        expect($result)->toBe('0.000001234');
+    });
+
+    test('converts large float to plain decimal instead of scientific notation', function () {
+        set_error_handler(fn (): bool => true, E_USER_WARNING);
+
+        try {
+            $result = $this->cast->set($this->model, 'price', 1e20, []);
+        } finally {
+            restore_error_handler();
+        }
+
+        expect($result)->toBe('100000000000000000000');
+    });
+
     test('rejects non-numeric string', function () {
         $this->cast->set($this->model, 'price', 'not-a-number', []);
     })->throws(InvalidArgumentException::class, 'must be a numeric string');
+
+    test('rejects scientific notation string that Number cannot parse', function () {
+        $this->cast->set($this->model, 'price', '1e5', []);
+    })->throws(InvalidArgumentException::class, 'must be a numeric string');
+
+    test('rejects numeric string with surrounding whitespace', function () {
+        $this->cast->set($this->model, 'price', ' 19.99', []);
+    })->throws(InvalidArgumentException::class, 'must be a numeric string');
+
+    test('rejects non-finite floats', function () {
+        $this->cast->set($this->model, 'price', INF, []);
+    })->throws(InvalidArgumentException::class, 'must be a finite number');
+
+    test('every stored string is readable back by get()', function (mixed $input) {
+        set_error_handler(fn (): bool => true, E_USER_WARNING);
+
+        try {
+            $stored = $this->cast->set($this->model, 'price', $input, []);
+        } finally {
+            restore_error_handler();
+        }
+
+        expect($this->cast->get($this->model, 'price', $stored, []))
+            ->toBeInstanceOf(Number::class);
+    })->with([
+        'plain string' => '19.99',
+        'signed string' => '+5',
+        'leading dot' => '.5',
+        'trailing dot' => '5.',
+        'integer' => 42,
+        'small float' => 0.000001234,
+        'large float' => 1e20,
+        'number object' => new Number('123.456789'),
+    ]);
 
     test('rejects invalid types', function () {
         $this->cast->set($this->model, 'price', [], []);
