@@ -84,6 +84,24 @@ describe('set() method', function () {
         expect($result)->toBe('-19.99');
     });
 
+    test('accepts explicitly signed positive string', function () {
+        $result = $this->cast->set($this->model, 'price', '+5', []);
+
+        expect($result)->toBe('+5');
+    });
+
+    test('accepts string with leading decimal point', function () {
+        $result = $this->cast->set($this->model, 'price', '.5', []);
+
+        expect($result)->toBe('.5');
+    });
+
+    test('accepts string with trailing decimal point', function () {
+        $result = $this->cast->set($this->model, 'price', '5.', []);
+
+        expect($result)->toBe('5.');
+    });
+
     test('converts float to string with warning', function () {
         $result = $this->cast->set($this->model, 'price', 19.99, []);
 
