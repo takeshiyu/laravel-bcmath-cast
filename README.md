@@ -90,8 +90,10 @@ $product->price = '29.99';
 // Integers
 $product->price = 30;
 
-// Floats (works but may lose precision - triggers warning)
-$product->price = 29.99; // ⚠️ Warning: precision loss possible
+// Floats (discouraged): the cast raises an E_USER_WARNING about precision loss.
+// Laravel's default error handler turns that warning into an ErrorException,
+// so in a standard Laravel app this assignment throws. Pass a string instead.
+$product->price = 29.99; // ⚠️ Throws ErrorException under Laravel's default error handling
 ```
 
 ### Database Column Types
